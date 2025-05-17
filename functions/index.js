@@ -37,7 +37,7 @@ app.post('/api/image', async (req, res) => {
 // 3) OpenAI text-to-speech
 app.post('/api/tts', async (req, res) => {
   try {
-    const audio = await openai.audio.speech.generate({
+    const audio = await openai.audio.speech.create({
       model: 'tts-1',
       input: req.body.text,
       voice: 'alloy'
