@@ -48,6 +48,26 @@ app.post('/api/tts', async (req, res) => {
   }
 });
 
+// 4) Google Custom Search
+app.get('/api/search', async (req, res) => {
+  const q = req.query.q;
+  if (!q) {
+    return res.status(400).json({ error: 'Missing q query parameter' });
+  }
+  try {
+    const { data } = await axios.get('https://www.googleapis.com/customsearch/v1', {
+      params: {
+        key: functions.config().google.api_key,
+        cx: functions.config().google.search_cx,
+        q
+      }
+    });
+    res.json(data);
+  } catch (e) {
+    res.status(500).send(e.toString());
+  }
+});
+
 // Export as a single HTTPS function
 exports.api = functions.https.onRequest(app);
 
